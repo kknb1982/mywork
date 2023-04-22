@@ -55,3 +55,7 @@ def gethisto():
         if name != species:
             sns.histplot(data=dataf, x=name, hue=species, multiple="dodge")
             plt.savefig(name+ '.png')
+
+meanvalues = dataf[sepallen].groupby(species).mean()
+stringmean = meanvalues.to_string(header=True, index =True)
+print(stringmean)
