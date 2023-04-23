@@ -19,7 +19,7 @@ filename = "summary.txt"
 dataf = pd.read_csv("https://archive.ics.uci.edu/ml/machine-learning-databases/iris/iris.data", 
                    names = datafields)
 
-def printfielddata():
+'''def printfielddata():
     with open(filename, 'a') as f:
         for name in datafields:
             if name != species:
@@ -40,22 +40,39 @@ def printfielddata():
                 f.write(stringmean)
                 f.close()
 
-'''def getspecies():
+def getspecies():
     irisspecies = data[species].unique()
-    '''
-irisspecies = dataf[species].unique()
+'''
+irisspecies = dataf.Species.unique()
+print(irisspecies)
+
+'''
+plt.hist([dataf.loc[dataf.Species == x, 'Sepal Length'] for x in irisspecies], label=irisspecies)
+plt.show()
 
 def getdatabyspecies():
     for type in irisspecies:
         speciesdata = (dataf[dataf[species] == type])
         print(speciesdata)
 
+getdatabyspecies()
+'''
+bars = []
+for i in np.arange (0, 9, 0.2):
+    bar = i
+    bars.append(bar)
+
+print(bars)
+
 def gethisto():
     for name in datafields:
         if name != species:
-            sns.histplot(data=dataf, x=name, hue=species, multiple="dodge")
-            plt.savefig(name+ '.png')
+            sns.histplot(data=dataf, x=name, hue=species, bins=bars)
+            plt.show()
 
+gethisto()
+'''
 meanvalues = dataf[sepallen].groupby(species).mean()
 stringmean = meanvalues.to_string(header=True, index =True)
 print(stringmean)
+'''
