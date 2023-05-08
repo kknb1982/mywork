@@ -1,27 +1,34 @@
-import pandas as pd
+# Import the libraries needed
+import pandas as pd 
 import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns 
-#
 
+# Create the variable names
 sepallen = "Sepal Length"
 sepalwid = "Sepal Width"
 petallen = "Petal Length"
 petalwid = "Petal Width"
 species = "Species"
 
-datafields = (sepallen, sepalwid, petallen, petalwid, species)
+datafields = sepallen, sepalwid, petallen, petalwid, species
 
-# path = "C:\Users\kirst\OneDrive - Atlantic TU\pands\mywork\project\"
-filename = "summary.txt"
-
-# Import data
+# Import Fishers Iris Dataset to a DataFrame
 dataf = pd.read_csv("https://archive.ics.uci.edu/ml/machine-learning-databases/iris/iris.data", 
                    names = datafields)
+'''
+print(dataf.groupby("Species").size())
 
-'''def printfielddata():
-    with open(filename, 'a') as f:
+# Finds the names of the iris species
+irisspecies = dataf.Species.unique()
+
+# Defines a function to creates a text file with summary data about the variable
+def printfielddata():
+    # Opens a text file called summary.txt to write data to, if it does not exist it will create it
+    with open('summary.txt', 'w') as f:
+        # iterate through the columns of the data
         for name in datafields:
+            # Ignore species at this is not numerical data
             if name != species:
                 header = (f'The column title is {name}')
                 f.write(header)
@@ -33,46 +40,42 @@ dataf = pd.read_csv("https://archive.ics.uci.edu/ml/machine-learning-databases/i
                 median = str(dataf[name].median())
                 mode = str(dataf[name].mode())
                 averages = (f'\nMean: {mean} \nMedian: {median} \nMode: {mode}\n\n')
-                f.writelines(averages)
+                f.writelines(averages)              
             else:
-                meanvalues = dataf.groupby(species).mean()
-                stringmean = meanvalues.to_string(header=True, index =True)
-                f.write(stringmean)
+                for x in irisspecies:
+                    f.writelines(f'\n{x} \n')
+                    x = dataf[dataf["Species"] == x]
+                    describex = x.describe()
+                    stringx = describex.to_string(header=True, index =True)
+                    f.writelines(stringx) 
+                    y = dataf.groupby("Species").size())
+                    f.writelines(y)
                 f.close()
 
-def getspecies():
-    irisspecies = data[species].unique()
-'''
-irisspecies = dataf.Species.unique()
-print(irisspecies)
-
-'''
-plt.hist([dataf.loc[dataf.Species == x, 'Sepal Length'] for x in irisspecies], label=irisspecies)
-plt.show()
-
-def getdatabyspecies():
-    for type in irisspecies:
-        speciesdata = (dataf[dataf[species] == type])
-        print(speciesdata)
-
-getdatabyspecies()
-'''
-bars = []
-for i in np.arange (0, 9, 0.2):
-    bar = i
-    bars.append(bar)
-
-print(bars)
+def createsimplehist():
+    dataf.hist()
+    plt.savefig('combinedhist.png')
+    plt.close()
 
 def gethisto():
     for name in datafields:
         if name != species:
-            sns.histplot(data=dataf, x=name, hue=species, bins=bars)
-            plt.show()
-
-gethisto()
+            sns.histplot(data=dataf, x=name, hue=species, binwidth=0.1)
+            plt.xlabel(f'{name} in cm')
+            plt.title(f'Histogram of the relevant frequency of \n{name.lower()} highlighted by iris species')
+            plt.savefig(name+ '.png')
+            plt.close()
 '''
-meanvalues = dataf[sepallen].groupby(species).mean()
-stringmean = meanvalues.to_string(header=True, index =True)
-print(stringmean)
+def createpairplot():
+    sns.pairplot(dataf, hue=species, diag_kind="hist")
+    plt.savefig('test.png')
+    
+
+createpairplot()
+'''
+def getboxplots():
+    dataf.boxplot(by=species)
+    plt.show()
+
+getboxplots()
 '''
