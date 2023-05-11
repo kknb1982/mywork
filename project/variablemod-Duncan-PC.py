@@ -12,29 +12,11 @@ petalwid = "Petal Width"
 species = "Species"
 
 datafields = sepallen, sepalwid, petallen, petalwid, species
-print(type(datafields))
-chartvariables = datafields[:4]
-print(chartvariables)
 
 # Import Fishers Iris Dataset to a DataFrame
 dataf = pd.read_csv("https://archive.ics.uci.edu/ml/machine-learning-databases/iris/iris.data", 
                    names = datafields)
-
-def createboxsub():
-    fig, axs = plt.subplots(nrows=2, ncols=2, layout='constrained')
-    for name in chartvariables:
-        plt.suptitle("Box plots of Fisher Iris Dataset by Species")
-        a = 1
-        plt.subplot(2,2,a)
-        sns.boxplot(data=dataf, x=species, y=name)
-        plt.ylabel(f'{name} in cm')
-        a += 1
-               plt.show()
-             
 '''
-g = dataf.boxplot(by=species, layout=(2,2), figsize=(10,8), return_type='axes')
-plt.subplots_adjust(left=0.2,bottom=0.2, top = 0.9, right = 0.9)
-ylabel
 print(dataf.groupby("Species").size())
 
 # Finds the names of the iris species
@@ -75,9 +57,6 @@ def createsimplehist():
     plt.savefig('combinedhist.png')
     plt.close()
 
-dataf.plot(kind='hist', figsize = (11,11), color=species, subplots="True", title='My Title')
-plt.show()
-
 def gethisto():
     for name in datafields:
         if name != species:
@@ -87,30 +66,18 @@ def gethisto():
             plt.savefig(name+ '.png')
             plt.close()
 
-g = sns.pairplot(data=dataf, hue=species,diag_kind="hist")
-g.fig.subplots_adjust(left= .1, bottom=.1, top=.95)
-g.fig.suptitle('Pairplot of the variables in the Fisher Iris Dataset', fontsize = 16, fontweight='bold')
-g.fig.supxlabel('in cm')
-g.fig.supylabel('in cm')
-plt.savefig('test.png')
+def createpairplot():
+    sns.pairplot(dataf, hue=species, diag_kind="hist")
+    plt.savefig('test.png')
+    
 
+createpairplot()
 
-g = dataf.boxplot(by=species)
-plt.title('Fisher xxxxx')
-ax.setylabel
-plt.ylabel('size in cm')
-plt.show()
+def getboxplots():
+    dataf.boxplot(by=species, figsize=(11,11))
+    plt.savefig('boxplot.png')
 
-dataf.plot(kind='box', figsize=(8,8), subplots=True, by=species, ylabel = 'Size in cm', title='Box plot of the Fisher Iris Dataset', layout=(2,2))
-plt.show()
-
-
-
-g.fig.subplots_adjust(left= .1, bottom=.1, top=.95)
-
-g.fig.suptitle('Pairplot of the variables in the Fisher Iris Dataset', fontsize = 16, fontweight='bold')
-g.fig.supxlabel('in cm')
-g.fig.supylabel('in cm')
+getboxplots()
 
 
 
@@ -118,10 +85,7 @@ def getviolinplots():
     for name in datafields:
         if name != species:
             sns.violinplot(data=dataf, x=species, y=name)
-            plt.ylabel(name+ 'in cm')
-            plt.title(f'Violin plot of {name} in cm separated by species')
             plt.savefig(name+ 'violin.png')
             plt.close()
 
 getviolinplots()
-'''
